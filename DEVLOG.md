@@ -154,8 +154,41 @@
 ### 6단계: 빌드 & 배포
 
 - `npm install` — 의존성 설치 완료
-- `npm run build` — 프로덕션 빌드
-- GitHub Pages 배포 (marketing.dreamitbiz.com)
+- `npm run build` — 프로덕션 빌드 성공 (151 modules, 58 assets)
+- Git 초기 커밋 (97 files, 24,459 insertions)
+- GitHub 리포지토리 푸시: `aebonlee/marketing` (main)
+
+---
+
+### 7단계: CI/CD 및 OG 태그 설정
+
+**GitHub Actions 배포 워크플로 (.github/workflows/deploy.yml):**
+- `main` 브랜치 push 시 자동 빌드 → `gh-pages` 브랜치로 배포
+- `peaceiris/actions-gh-pages@v4` 사용
+- Supabase 자격증명은 GitHub Secrets로 관리
+- SPA 라우팅 지원: `index.html` → `404.html` 자동 복사
+- 커스텀 도메인: `marketing.dreamitbiz.com`
+
+**Open Graph (OG) 메타 태그 설정:**
+- `index.html` (정적): 카카오/네이버/페이스북 등 크롤러가 읽을 수 있는 정적 OG 태그
+  - `og:type` = "website"
+  - `og:title` = "DreamIT Marketing | 마케팅 학습"
+  - `og:description` = "마케팅 기초부터 디지털마케팅 실무까지 - 15주 체계적 학습 과정"
+  - `og:image` = "https://marketing.dreamitbiz.com/og-image.png" (400x302)
+  - `og:url` = "https://marketing.dreamitbiz.com"
+  - `og:site_name` = "DreamIT Marketing"
+  - `og:locale` = "ko_KR"
+  - Twitter Card 메타태그 (summary_large_image)
+- `SEOHead.jsx` (동적): 각 페이지별 title, description, canonical URL, OG 태그 오버라이드
+- `public/og-image.png` — OG 미리보기 이미지 (400x302px)
+
+**환경 변수 (.env):**
+- Supabase URL/Key 설정 (koreatech과 동일 프로젝트 공유)
+- `.env`는 `.gitignore`에 포함 — GitHub Secrets로 CI/CD에서 주입
+
+**GitHub Secrets 필요:**
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
 
 ---
 
@@ -170,9 +203,13 @@ D:\marketing/
 ├── .gitignore
 ├── .env.example
 ├── DEVLOG.md
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
 ├── public/
 │   ├── CNAME
-│   └── favicon.svg
+│   ├── favicon.svg
+│   └── og-image.png
 └── src/
     ├── main.jsx
     ├── App.jsx
