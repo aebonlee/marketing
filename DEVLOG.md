@@ -192,6 +192,42 @@
 
 ---
 
+### 8단계: Supabase 데이터베이스 스키마
+
+`supabase-schema.sql` 파일 생성 — Supabase SQL Editor에서 실행하여 DB 초기화
+
+**테이블 10개:**
+| # | 테이블 | 용도 | 주요 컬럼 |
+|---|--------|------|-----------|
+| 1 | `user_profiles` | 회원 프로필 | id(uuid→auth.users), email, full_name, role, signup_domain, last_login |
+| 2 | `posts` | 게시판 | id, title, category, content, user_id, author_name, views |
+| 3 | `comments` | 게시판 댓글 | id, post_id(FK), user_id, author_name, content |
+| 4 | `lectures` | 강의자료 | id, week_number, title, file_url, content, is_published, views |
+| 5 | `gallery` | 갤러리 | id, title, category, image_url, link_url, description, views |
+| 6 | `gallery_comments` | 갤러리 댓글 | id, gallery_id(FK), user_id, author_name, content |
+| 7 | `portfolio` | 포트폴리오 | id, title, summary, cover_image, tags, content, views |
+| 8 | `portfolio_comments` | 포트폴리오 댓글 | id, portfolio_id(FK), user_id, author_name, content |
+| 9 | `websites` | 웹 추천사이트 | id, title, category, url, image_url, description, views |
+| 10 | `websites_comments` | 웹사이트 댓글 | id, website_id(FK), user_id, author_name, content |
+
+**RPC 함수 7개 + 트리거 1개:**
+- `handle_new_user()` — 회원가입 시 user_profiles 자동 생성 (트리거)
+- `increment_views(post_id)` — 게시판 조회수 +1
+- `increment_lecture_views(lecture_id)` — 강의 조회수 +1
+- `increment_gallery_views(item_id)` — 갤러리 조회수 +1
+- `increment_portfolio_views(item_id)` — 포트폴리오 조회수 +1
+- `increment_website_views(item_id)` — 웹사이트 조회수 +1
+- `update_last_login(target_user_id)` — 마지막 로그인 시간 갱신
+- `check_user_status(target_user_id, current_domain)` — 계정 상태 확인
+
+**Row Level Security (RLS):**
+- 모든 테이블에 RLS 활성화
+- SELECT: 누구나 읽기 가능
+- INSERT: 인증된 사용자만 생성 가능
+- UPDATE/DELETE: 본인 작성글만 수정/삭제 가능
+
+---
+
 ## 프로젝트 구조
 
 ```
@@ -203,6 +239,7 @@ D:\marketing/
 ├── .gitignore
 ├── .env.example
 ├── DEVLOG.md
+├── supabase-schema.sql
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml
