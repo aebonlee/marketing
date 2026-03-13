@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams, useLocation, Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
@@ -9,10 +9,14 @@ import SEOHead from '../components/SEOHead';
 const LectureWrite = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const location = useLocation();
   const { t } = useLanguage();
   const { user, isAdmin } = useAuth();
   const { showToast } = useToast();
 
+  const isLecturePath = location.pathname.startsWith('/lectures');
+  const basePath = isLecturePath ? '/lectures' : '/references';
+  const categoryValue = isLecturePath ? 'lecture' : 'reference';
   const isEdit = !!id;
 
   const [form, setForm] = useState({
@@ -51,7 +55,7 @@ const LectureWrite = () => {
       <section className="section">
         <div className="container">
           <div className="board-empty">{t('site.lectures.adminOnly')}</div>
-          <Link to="/references" className="board-btn">{t('site.lectures.backToList')}</Link>
+          <Link to={basePath} className="board-btn">{t('site.lectures.backToList')}</Link>
         </div>
       </section>
     );
@@ -76,6 +80,7 @@ const LectureWrite = () => {
         cover_image: '',
         content: form.content.trim(),
         tags: [],
+        category: categoryValue,
         is_published: form.is_published,
         user_id: user.id,
       };
@@ -88,7 +93,7 @@ const LectureWrite = () => {
         lecture = await createLecture(lectureData);
         showToast(t('site.lectures.created'), 'success');
       }
-      navigate(`/references/${lecture.id}`);
+      navigate(`${basePath}/${lecture.id}`);
     } catch (err) {
       showToast(err.message, 'error');
     } finally {
@@ -110,7 +115,7 @@ const LectureWrite = () => {
     <>
       <SEOHead
         title={isEdit ? t('site.lectures.editTitle') : t('site.lectures.writeTitle')}
-        path={isEdit ? `/references/edit/${id}` : '/references/write'}
+        path={isEdit ? `${basePath}/edit/${id}` : `${basePath}/write`}
         noindex
       />
 
@@ -183,7 +188,7 @@ const LectureWrite = () => {
             </div>
 
             <div className="form-actions">
-              <button type="button" className="board-btn" onClick={() => navigate('/references')}>
+              <button type="button" className="board-btn" onClick={() => navigate(basePath)}>
                 {t('site.lectures.cancel')}
               </button>
               <button type="submit" className="board-btn primary" disabled={submitting}>

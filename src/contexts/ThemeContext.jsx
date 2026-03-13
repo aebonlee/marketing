@@ -14,7 +14,7 @@ export const ThemeProvider = ({ children }) => {
 
   const [theme, setTheme] = useState(() => getTimeBasedTheme());
 
-  const [colorTheme, setColorTheme] = useState('coral');
+  const [colorTheme, setColorTheme] = useState('blue');
 
   useEffect(() => {
     if (mode !== 'auto') {

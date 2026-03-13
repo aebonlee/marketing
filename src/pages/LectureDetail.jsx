@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
@@ -9,9 +9,14 @@ import SEOHead from '../components/SEOHead';
 const LectureDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useLanguage();
   const { isAdmin, isLoggedIn } = useAuth();
   const { showToast } = useToast();
+
+  const isLecturePath = location.pathname.startsWith('/lectures');
+  const basePath = isLecturePath ? '/lectures' : '/references';
+  const pageTitle = isLecturePath ? t('site.lectures.title') : t('site.references.title');
 
   const [lecture, setLecture] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -35,7 +40,7 @@ const LectureDetail = () => {
     try {
       await deleteLecture(id);
       showToast(t('site.lectures.deleted'), 'success');
-      navigate('/references');
+      navigate(basePath);
     } catch (err) {
       showToast(err.message, 'error');
     }
@@ -56,7 +61,7 @@ const LectureDetail = () => {
       <section className="section">
         <div className="container">
           <div className="board-empty">{t('site.lectures.notFound')}</div>
-          <Link to="/references" className="board-btn">{t('site.lectures.backToList')}</Link>
+          <Link to={basePath} className="board-btn">{t('site.lectures.backToList')}</Link>
         </div>
       </section>
     );
@@ -64,11 +69,11 @@ const LectureDetail = () => {
 
   return (
     <>
-      <SEOHead title={lecture.title} path={`/references/${id}`} />
+      <SEOHead title={lecture.title} path={`${basePath}/${id}`} />
 
       <section className="page-header">
         <div className="container">
-          <h1>{t('site.references.title')}</h1>
+          <h1>{pageTitle}</h1>
         </div>
       </section>
 
@@ -120,12 +125,12 @@ const LectureDetail = () => {
             )}
 
             <div className="lecture-detail-actions">
-              <Link to="/references" className="board-btn">
+              <Link to={basePath} className="board-btn">
                 {t('site.lectures.backToList')}
               </Link>
               {isAdmin && (
                 <>
-                  <Link to={`/references/edit/${id}`} className="board-btn primary">
+                  <Link to={`${basePath}/edit/${id}`} className="board-btn primary">
                     {t('site.lectures.edit')}
                   </Link>
                   <button className="board-btn danger" onClick={handleDelete}>

@@ -120,9 +120,11 @@ const PublicLayout = () => {
             <Route path="/digital/influencer" element={<DigitalInfluencer />} />
             <Route path="/digital/automation" element={<DigitalAutomation />} />
 
-            {/* Lectures (강의자료) */}
-            <Route path="/lectures/materials" element={<LectureMaterials />} />
+            {/* Lectures (강의자료) — DB 게시판 */}
             <Route path="/lectures" element={<LectureMaterials />} />
+            <Route path="/lectures/write" element={<AuthGuard><LectureWrite /></AuthGuard>} />
+            <Route path="/lectures/edit/:id" element={<AuthGuard><LectureWrite /></AuthGuard>} />
+            <Route path="/lectures/:id" element={<LectureDetail />} />
 
             {/* References (참고자료) */}
             <Route path="/references" element={<Lectures />} />

@@ -171,15 +171,20 @@ export const searchPosts = async (query) => {
   return data || [];
 };
 
-export const getLectures = async () => {
+export const getLectures = async (category = null) => {
   const client = getSupabase();
   if (!client) return [];
 
-  const { data, error } = await client
+  let query = client
     .from('lectures')
     .select('*')
-    .eq('is_published', true)
-    .order('week_number', { ascending: true });
+    .eq('is_published', true);
+
+  if (category) {
+    query = query.eq('category', category);
+  }
+
+  const { data, error } = await query.order('week_number', { ascending: true });
 
   if (error) {
     console.error('getLectures error:', error);

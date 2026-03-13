@@ -10,9 +10,9 @@
 }
 
 :root {
-    --primary-blue: #E8590C;
-    --primary-blue-dark: #C24A0A;
-    --primary-blue-light: #F08040;
+    --primary-blue: #0046C8;
+    --primary-blue-dark: #002E8A;
+    --primary-blue-light: #4A8FE7;
     --bg-white: #FFFFFF;
     --bg-light-gray: #F5F7FA;
     --bg-medium-gray: #E8EDF2;
@@ -31,13 +31,13 @@
     --container-max: 1280px;
 
     /* Gradient */
-    --primary-gradient: linear-gradient(135deg, #E8590C 0%, #F08040 100%);
-    --accent-gradient: linear-gradient(135deg, #C24A0A 0%, #E8590C 50%, #F08040 100%);
+    --primary-gradient: linear-gradient(135deg, #0046C8 0%, #4A8FE7 100%);
+    --accent-gradient: linear-gradient(135deg, #002E8A 0%, #0046C8 50%, #4A8FE7 100%);
 
     /* Hero / CTA / Page-header shared background */
-    --hero-bg: linear-gradient(135deg, #E8590C 0%, #C24A0A 50%, #8B3A0A 100%);
-    --hero-bg-dark: linear-gradient(135deg, #8B3A0A 0%, #7A300A 50%, #5E2508 100%);
-    --highlight-gradient: linear-gradient(135deg, #FDBA93 0%, #FDD8BF 50%, #FFFFFF 100%);
+    --hero-bg: linear-gradient(135deg, #0046C8 0%, #002E8A 50%, #1E3A5F 100%);
+    --hero-bg-dark: linear-gradient(135deg, #0A2D6E 0%, #122870 50%, #172D58 100%);
+    --highlight-gradient: linear-gradient(135deg, #93C5FD 0%, #BFDBFE 50%, #FFFFFF 100%);
 
     /* Glassmorphism */
     --glass-bg: rgba(255, 255, 255, 0.85);
@@ -52,25 +52,25 @@
     --radius-full: 9999px;
 
     /* Primary background tint */
-    --primary-blue-bg: rgba(232, 89, 12, 0.06);
+    --primary-blue-bg: rgba(0, 70, 200, 0.06);
 
     /* Transition */
     --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ── Color Theme Overrides ── */
-/* Coral is the default (no override needed) */
+/* Blue is the default (no override needed) */
 
-html[data-color="blue"] {
-    --primary-blue: #0046C8;
-    --primary-blue-dark: #002E8A;
-    --primary-blue-light: #4A8FE7;
-    --primary-blue-bg: rgba(0, 70, 200, 0.06);
-    --primary-gradient: linear-gradient(135deg, #0046C8 0%, #4A8FE7 100%);
-    --accent-gradient: linear-gradient(135deg, #002E8A 0%, #0046C8 50%, #4A8FE7 100%);
-    --hero-bg: linear-gradient(135deg, #0046C8 0%, #002E8A 50%, #1E3A5F 100%);
-    --hero-bg-dark: linear-gradient(135deg, #0A2D6E 0%, #122870 50%, #172D58 100%);
-    --highlight-gradient: linear-gradient(135deg, #93C5FD 0%, #BFDBFE 50%, #FFFFFF 100%);
+html[data-color="coral"] {
+    --primary-blue: #E8590C;
+    --primary-blue-dark: #C24A0A;
+    --primary-blue-light: #F08040;
+    --primary-blue-bg: rgba(232, 89, 12, 0.06);
+    --primary-gradient: linear-gradient(135deg, #E8590C 0%, #F08040 100%);
+    --accent-gradient: linear-gradient(135deg, #C24A0A 0%, #E8590C 50%, #F08040 100%);
+    --hero-bg: linear-gradient(135deg, #E8590C 0%, #C24A0A 50%, #8B3A0A 100%);
+    --hero-bg-dark: linear-gradient(135deg, #8B3A0A 0%, #7A300A 50%, #5E2508 100%);
+    --highlight-gradient: linear-gradient(135deg, #FDBA93 0%, #FDD8BF 50%, #FFFFFF 100%);
 }
 
 html[data-color="red"] {

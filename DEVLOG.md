@@ -278,6 +278,33 @@ HINT: Use DROP FUNCTION check_user_status(uuid,text) first.
 
 ---
 
+### 11단계: 기본 컬러 Blue 변경 및 게시판 구조 정비
+
+**기본 컬러 Coral → Blue 변경:**
+- `ThemeContext.jsx` — 기본 colorTheme을 `'coral'` → `'blue'`로 변경
+- `base.css` — `:root` 기본값을 Blue(#0046C8)로, Coral은 override로 전환
+- `site.js` — `themeColor: '#0046C8'`
+
+**게시판 구조 분리 (강의자료 / 참고자료):**
+- `lectures` 테이블에 `category` 컬럼 추가 (`'lecture'` / `'reference'`)
+- `supabase.js` — `getLectures(category)` 카테고리 필터 지원
+- `LectureMaterials.jsx` — koreatech 하드코딩 PDF 삭제, DB 기반 게시판으로 재작성 (category='lecture')
+- `Lectures.jsx` — category='reference' 필터 적용
+- `LectureDetail.jsx` / `LectureWrite.jsx` — URL 경로 기반 자동 분기 (강의자료 ↔ 참고자료)
+- `PublicLayout.jsx` — `/lectures/write`, `/lectures/edit/:id`, `/lectures/:id` 라우트 추가
+
+**게시판 최종 구조:**
+| 메뉴 | DB 테이블 | 카테고리 | 라우트 |
+|------|-----------|---------|--------|
+| 강의자료 | `lectures` | `lecture` | `/lectures` |
+| 참고자료 | `lectures` | `reference` | `/references` |
+| 게시판 | `posts` | notice/question/free | `/community/board` |
+| 갤러리 | `gallery` | — | `/community/gallery` |
+| 포트폴리오 | `portfolio` | — | `/community/portfolio` |
+| 웹사이트 | `websites` | — | `/community/websites` |
+
+---
+
 ## 프로젝트 구조
 
 ```

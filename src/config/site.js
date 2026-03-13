@@ -27,7 +27,7 @@ const site = {
   },
 
   // 테마 컬러 (meta theme-color)
-  themeColor: '#E8590C',
+  themeColor: '#0046C8',
 
   // 네비게이션 메뉴
   menuItems: [

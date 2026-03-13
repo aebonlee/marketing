@@ -1,38 +1,61 @@
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
+import { getLectures, incrementLectureViews } from '../utils/supabase';
+import getSupabase from '../utils/supabase';
 import SEOHead from '../components/SEOHead';
 
-const PDF_LIST = [
-  { week: 1, file: 'week01.pdf', title: '입력과 출력 (변수, print, input)', titleEn: 'Input & Output (Variables, print, input)' },
-  { week: 2, file: 'week02.pdf', title: '데이터 연산 (계산기 만들기)', titleEn: 'Data Operations (Building a Calculator)' },
-  { week: 3, file: 'week03.pdf', title: '데이터 표현 및 조작 (리스트)', titleEn: 'Data Representation & Manipulation (Lists)' },
-  { week: 4, file: 'week04.pdf', title: '문제 정의와 핵심아이디어', titleEn: 'Problem Definition & Key Ideas' },
-  { week: 5, file: 'week05.pdf', title: '컴퓨터로 이해하기 (터틀 그래픽)', titleEn: 'Understanding with Computers (Turtle Graphics)' },
-  { week: 6, file: 'week06.pdf', title: '기능 단위 분리 (함수)', titleEn: 'Modular Design (Functions)' },
-  { week: 7, file: 'week07.pdf', title: '알고리즘 표현 (순서도)', titleEn: 'Algorithm Representation (Flowchart)' },
-  { week: 8, file: 'week08.pdf', title: '조건문 실습 (if-else)', titleEn: 'Conditionals Practice (if-else)' },
-  { week: 9, file: 'week09.pdf', title: '반복문 실습 (while, for)', titleEn: 'Loops Practice (while, for)' },
-  { week: 10, file: 'week10.pdf', title: '알고리즘 심화 (정렬 등)', titleEn: 'Advanced Algorithms (Sorting, etc.)' },
-  { week: 11, file: 'week11.pdf', title: '에러와 디버깅', titleEn: 'Errors & Debugging' },
-  { week: 12, file: 'week12.pdf', title: '프로젝트 (포트폴리오 만들기)', titleEn: 'Project (Building a Portfolio)' },
-];
-
 const LectureMaterials = () => {
-  const navigate = useNavigate();
-  const { t, language } = useLanguage();
-  const { isLoggedIn } = useAuth();
+  const { t } = useLanguage();
+  const { isAdmin, isLoggedIn } = useAuth();
   const { showToast } = useToast();
+  const navigate = useNavigate();
+  const [lectures, setLectures] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [expandedId, setExpandedId] = useState(null);
 
-  const getPdfUrl = (file) => `${import.meta.env.BASE_URL}pdf/${file}`;
+  const client = getSupabase();
 
-  const handleDownload = (e, file) => {
+  useEffect(() => {
+    loadLectures();
+  }, []);
+
+  const loadLectures = async () => {
+    setLoading(true);
+    const data = await getLectures('lecture');
+    setLectures(data);
+    setLoading(false);
+  };
+
+  const toggleExpand = (lecture) => {
+    if (expandedId === lecture.id) {
+      setExpandedId(null);
+    } else {
+      setExpandedId(lecture.id);
+      incrementLectureViews(lecture.id);
+    }
+  };
+
+  const handleFileAction = (e) => {
     if (!isLoggedIn) {
       e.preventDefault();
       showToast(t('download.loginRequired'), 'error');
       navigate('/login');
     }
+  };
+
+  const getFileUrl = (fileUrl) => {
+    if (!fileUrl) return null;
+    if (fileUrl.startsWith('http')) return fileUrl;
+    const cleanPath = fileUrl.startsWith('/pdf/') ? fileUrl : `/pdf/${fileUrl}`;
+    return `${import.meta.env.BASE_URL}${cleanPath.replace(/^\//, '')}`;
+  };
+
+  const getFileName = (fileUrl) => {
+    if (!fileUrl) return '';
+    return fileUrl.split('/').pop();
   };
 
   return (
@@ -48,54 +71,119 @@ const LectureMaterials = () => {
 
       <section className="section">
         <div className="container">
-          <div className="materials-table-wrapper">
-            <table className="materials-table">
-              <thead>
-                <tr>
-                  <th className="materials-col-week">{t('site.lectures.materials.week')}</th>
-                  <th>{t('site.lectures.materials.titleLabel')}</th>
-                  <th className="materials-col-file">{t('site.lectures.materials.fileName')}</th>
-                  <th className="materials-col-actions">{t('site.lectures.materials.actions')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {PDF_LIST.map((pdf) => (
-                  <tr key={pdf.week}>
-                    <td className="materials-col-week">
-                      <span className="materials-week-badge">
-                        {pdf.week}{t('site.lectures.materials.weekUnit')}
-                      </span>
-                    </td>
-                    <td className="materials-title-cell">
-                      {language === 'ko' ? pdf.title : pdf.titleEn}
-                    </td>
-                    <td className="materials-col-file materials-file-cell">{pdf.file}</td>
-                    <td className="materials-col-actions">
-                      <div className="materials-btn-group">
-                        <a
-                          className="materials-btn newtab"
-                          href={getPdfUrl(pdf.file)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => handleDownload(e, pdf.file)}
-                        >
-                          {t('site.lectures.materials.view')}
-                        </a>
-                        <a
-                          className="materials-btn download"
-                          href={getPdfUrl(pdf.file)}
-                          download={pdf.file}
-                          onClick={(e) => handleDownload(e, pdf.file)}
-                        >
-                          {t('site.lectures.materials.download')}
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          {!client ? (
+            <div className="board-empty">{t('site.board.notConfigured')}</div>
+          ) : (
+            <>
+              {isAdmin && (
+                <div className="lecture-toolbar">
+                  <Link to="/lectures/write" className="board-write-btn">
+                    {t('site.lectures.write')}
+                  </Link>
+                </div>
+              )}
+
+              {loading ? (
+                <div className="board-loading">
+                  <div className="loading-spinner"></div>
+                </div>
+              ) : lectures.length === 0 ? (
+                <div className="board-empty">{t('site.lectures.empty')}</div>
+              ) : (
+                <div className="materials-table-wrapper">
+                  <table className="materials-table">
+                    <thead>
+                      <tr>
+                        <th className="materials-col-week">{t('site.lectures.weekPrefix')}</th>
+                        <th>{t('site.lectures.titleLabel')}</th>
+                        <th className="ref-col-actions">{t('site.lectures.materials.actions')}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {lectures.map((lecture) => {
+                        const isExpanded = expandedId === lecture.id;
+                        const fileUrl = getFileUrl(lecture.file_url);
+                        return (
+                          <React.Fragment key={lecture.id}>
+                            <tr
+                              className={isExpanded ? 'active-row' : ''}
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => toggleExpand(lecture)}
+                            >
+                              <td className="materials-col-week">
+                                <span className="materials-week-badge">
+                                  Week {lecture.week_number}
+                                </span>
+                              </td>
+                              <td className="materials-title-cell">
+                                <div className="ref-title-row">
+                                  <span className={`ref-expand-icon ${isExpanded ? 'expanded' : ''}`}>&#9654;</span>
+                                  <span>{lecture.title}</span>
+                                </div>
+                              </td>
+                              <td className="ref-col-actions" onClick={(e) => e.stopPropagation()}>
+                                <div className="materials-btn-group">
+                                  {fileUrl ? (
+                                    <>
+                                      <a
+                                        className="materials-btn newtab"
+                                        href={fileUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={handleFileAction}
+                                      >
+                                        {t('site.lectures.materials.view')}
+                                      </a>
+                                      <a
+                                        className="materials-btn download"
+                                        href={fileUrl}
+                                        download={getFileName(lecture.file_url)}
+                                        onClick={handleFileAction}
+                                      >
+                                        {t('site.lectures.materials.download')}
+                                      </a>
+                                    </>
+                                  ) : (
+                                    <span className="ref-no-file">{t('site.references.noFile')}</span>
+                                  )}
+                                  {isAdmin && (
+                                    <Link
+                                      to={`/lectures/edit/${lecture.id}`}
+                                      className="materials-btn ref-edit-btn"
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      {t('site.lectures.edit')}
+                                    </Link>
+                                  )}
+                                </div>
+                              </td>
+                            </tr>
+                            {isExpanded && (
+                              <tr className="ref-dropdown-row">
+                                <td colSpan="3">
+                                  <div className="ref-dropdown-content">
+                                    {lecture.content ? (
+                                      <div className="ref-content-text">
+                                        {lecture.content.split('\n').map((line, i) => (
+                                          <p key={i}>{line || '\u00A0'}</p>
+                                        ))}
+                                      </div>
+                                    ) : (
+                                      <p className="ref-content-empty">{t('site.references.noContent')}</p>
+                                    )}
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </>
+          )}
         </div>
       </section>
     </>

@@ -24,7 +24,7 @@ const Lectures = () => {
 
   const loadLectures = async () => {
     setLoading(true);
-    const data = await getLectures();
+    const data = await getLectures('reference');
     setLectures(data);
     setLoading(false);
   };
