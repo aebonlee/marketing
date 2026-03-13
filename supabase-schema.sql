@@ -232,33 +232,41 @@ SELECT public._create_policy_if_not_exists('websites_comments', 'Authors can del
 
 
 -- ============================================
--- RPC Functions (CREATE OR REPLACE → 항상 안전)
+-- RPC Functions
+-- DROP IF EXISTS → CREATE OR REPLACE 로 파라미터 기본값 충돌 방지
 -- ============================================
 
+DROP FUNCTION IF EXISTS public.increment_views(bigint);
 CREATE OR REPLACE FUNCTION public.increment_views(post_id bigint)
 RETURNS void LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN UPDATE public.posts SET views = views + 1 WHERE id = post_id; END; $$;
 
+DROP FUNCTION IF EXISTS public.increment_lecture_views(bigint);
 CREATE OR REPLACE FUNCTION public.increment_lecture_views(lecture_id bigint)
 RETURNS void LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN UPDATE public.lectures SET views = views + 1 WHERE id = lecture_id; END; $$;
 
+DROP FUNCTION IF EXISTS public.increment_gallery_views(bigint);
 CREATE OR REPLACE FUNCTION public.increment_gallery_views(item_id bigint)
 RETURNS void LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN UPDATE public.gallery SET views = views + 1 WHERE id = item_id; END; $$;
 
+DROP FUNCTION IF EXISTS public.increment_portfolio_views(bigint);
 CREATE OR REPLACE FUNCTION public.increment_portfolio_views(item_id bigint)
 RETURNS void LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN UPDATE public.portfolio SET views = views + 1 WHERE id = item_id; END; $$;
 
+DROP FUNCTION IF EXISTS public.increment_website_views(bigint);
 CREATE OR REPLACE FUNCTION public.increment_website_views(item_id bigint)
 RETURNS void LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN UPDATE public.websites SET views = views + 1 WHERE id = item_id; END; $$;
 
+DROP FUNCTION IF EXISTS public.update_last_login(uuid);
 CREATE OR REPLACE FUNCTION public.update_last_login(target_user_id uuid)
 RETURNS void LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN UPDATE public.user_profiles SET last_login = now() WHERE id = target_user_id; END; $$;
 
+DROP FUNCTION IF EXISTS public.check_user_status(uuid, text);
 CREATE OR REPLACE FUNCTION public.check_user_status(target_user_id uuid, current_domain text)
 RETURNS json LANGUAGE plpgsql SECURITY DEFINER AS $$
 DECLARE result json;
