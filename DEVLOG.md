@@ -303,6 +303,9 @@ HINT: Use DROP FUNCTION check_user_status(uuid,text) first.
 | 포트폴리오 | `portfolio` | — | `/community/portfolio` |
 | 웹사이트 | `websites` | — | `/community/websites` |
 
+**파비콘 컬러 변경:**
+- `public/favicon.svg` — 배경색 Coral(#E8590C) → Blue(#0046C8)
+
 ---
 
 ## 프로젝트 구조
