@@ -361,6 +361,5 @@ D:\marketing/
 ---
 
 ## 패밀리 사이트
-- **DreamIT Computing** — computing.dreamitbiz.com (컴퓨팅 사고)
 - **DreamIT Marketing** — marketing.dreamitbiz.com (마케팅) ← 현재 사이트
-- **DreamIT KoreaTeach** — koreatech.dreamitbiz.com (한국어교육)
+- **DreamIT KoreaTeach** — koreatech.dreamitbiz.com (컴퓨팅사고 과목 - 한국기술교육대학교 강의)
