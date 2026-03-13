@@ -228,6 +228,41 @@
 
 ---
 
+### 9단계: SQL 스크립트 개별 파일 분리
+
+koreatech과 동일한 Supabase 프로젝트를 공유하므로, 기존 테이블/정책과 충돌 없이 실행 가능하도록 개선:
+
+**헬퍼 함수:**
+- `_create_policy_if_not_exists()` — `pg_policies`를 확인하여 이미 존재하는 RLS 정책은 건너뛰는 안전한 생성 함수
+
+**개별 SQL 파일 (sql/ 디렉토리, 12개):**
+| # | 파일 | 내용 |
+|---|------|------|
+| 00 | `00_helper.sql` | `_create_policy_if_not_exists()` 헬퍼 함수 |
+| 01 | `01_user_profiles.sql` | user_profiles 테이블 + handle_new_user 트리거 |
+| 02 | `02_posts.sql` | posts 게시판 테이블 |
+| 03 | `03_comments.sql` | comments 댓글 테이블 |
+| 04 | `04_lectures.sql` | lectures 강의자료 테이블 |
+| 05 | `05_gallery.sql` | gallery 갤러리 테이블 |
+| 06 | `06_gallery_comments.sql` | gallery_comments 갤러리 댓글 테이블 |
+| 07 | `07_portfolio.sql` | portfolio 포트폴리오 테이블 |
+| 08 | `08_portfolio_comments.sql` | portfolio_comments 댓글 테이블 |
+| 09 | `09_websites.sql` | websites 웹 추천사이트 테이블 |
+| 10 | `10_websites_comments.sql` | websites_comments 댓글 테이블 |
+| 11 | `11_rpc_functions.sql` | RPC 함수 7개 (CREATE OR REPLACE) |
+
+**실행 순서:**
+1. Supabase SQL Editor에서 `00_helper.sql` 먼저 실행
+2. `01` → `11` 순서대로 실행 (테이블 간 FK 의존성 순서)
+3. `CREATE TABLE IF NOT EXISTS`로 이미 존재하는 테이블은 건너뜀
+4. `_create_policy_if_not_exists()`로 이미 존재하는 정책은 건너뜀
+5. RPC 함수는 `CREATE OR REPLACE`로 안전하게 덮어쓰기
+
+**`supabase-schema.sql` (통합본):**
+- 12개 파일 내용을 하나로 합친 버전 (한 번에 실행 가능)
+
+---
+
 ## 프로젝트 구조
 
 ```
@@ -240,6 +275,19 @@ D:\marketing/
 ├── .env.example
 ├── DEVLOG.md
 ├── supabase-schema.sql
+├── sql/
+│   ├── 00_helper.sql
+│   ├── 01_user_profiles.sql
+│   ├── 02_posts.sql
+│   ├── 03_comments.sql
+│   ├── 04_lectures.sql
+│   ├── 05_gallery.sql
+│   ├── 06_gallery_comments.sql
+│   ├── 07_portfolio.sql
+│   ├── 08_portfolio_comments.sql
+│   ├── 09_websites.sql
+│   ├── 10_websites_comments.sql
+│   └── 11_rpc_functions.sql
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml
