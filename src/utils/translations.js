@@ -147,7 +147,7 @@ export const translations = {
         },
       },
       home: {
-        title: 'DreamIT Marketing',
+        title: 'Marketing',
         subtitle: '마케팅 기초부터 디지털마케팅 실무까지',
         heroDesc: '체계적인 15주 마케팅 학습 과정에 오신 것을 환영합니다. 마케팅 원론부터 디지털마케팅 실무까지 단계별로 학습해보세요.',
         startLearning: '학습 시작하기',
@@ -528,7 +528,7 @@ export const translations = {
         },
       },
       home: {
-        title: 'DreamIT Marketing',
+        title: 'Marketing',
         subtitle: 'From Marketing Basics to Digital Marketing Practice',
         heroDesc: 'Welcome to the 15-week systematic marketing learning course. Learn marketing principles through digital marketing practice step by step.',
         startLearning: 'Start Learning',
