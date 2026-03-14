@@ -20,9 +20,7 @@ const site = {
   // 브랜드 로고 텍스트
   brand: {
     parts: [
-      { text: 'Dream', className: 'brand-dream' },
-      { text: 'IT', className: 'brand-it' },
-      { text: ' Marketing', className: 'brand-biz' }
+      { text: 'Marketing', className: 'brand-highlight' }
     ]
   },
 

@@ -47,6 +47,11 @@
     color: var(--primary-blue-light);
 }
 
+.footer-brand .brand-highlight {
+    color: #FFFFFF;
+    font-weight: 800;
+}
+
 .footer-brand p {
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.7;

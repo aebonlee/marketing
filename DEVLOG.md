@@ -306,6 +306,11 @@ HINT: Use DROP FUNCTION check_user_status(uuid,text) first.
 **파비콘 컬러 변경:**
 - `public/favicon.svg` — 배경색 Coral(#E8590C) → Blue(#0046C8)
 
+**브랜드 로고 변경:**
+- `site.js` — brand.parts를 `Marketing` 단일 텍스트로 변경 (DreamIT Biz 제거)
+- `navbar.css` — `.brand-highlight` 스타일 추가 (primary-blue, font-weight 800)
+- `footer.css` — `.footer-brand .brand-highlight` 스타일 추가 (white, font-weight 800)
+
 ---
 
 ## 프로젝트 구조
