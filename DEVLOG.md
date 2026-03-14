@@ -5,7 +5,7 @@
 - **도메인**: marketing.dreamitbiz.com
 - **기술 스택**: React 19 + Vite 7 + Supabase + React Router 7
 - **기반 프로젝트**: D:\koreatech (컴퓨팅 사고 학습 사이트) 아키텍처 동일 적용
-- **기본 테마 컬러**: Coral (#E8590C)
+- **기본 테마 컬러**: Blue (#0046C8)
 
 ---
 
@@ -310,6 +310,9 @@ HINT: Use DROP FUNCTION check_user_status(uuid,text) first.
 - `site.js` — brand.parts를 `Marketing` 단일 텍스트로 변경 (DreamIT Biz 제거)
 - `navbar.css` — `.brand-highlight` 스타일 추가 (primary-blue, font-weight 800)
 - `footer.css` — `.footer-brand .brand-highlight` 스타일 추가 (white, font-weight 800)
+
+**히어로 타이틀 변경:**
+- `translations.js` — 히어로 타이틀에서 'DreamIT' 제거, `'Marketing'`만 표시 (한/영 모두)
 
 ---
 
