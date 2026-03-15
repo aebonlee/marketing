@@ -314,6 +314,12 @@ HINT: Use DROP FUNCTION check_user_status(uuid,text) first.
 **히어로 타이틀 변경:**
 - `translations.js` — 히어로 타이틀에서 'DreamIT' 제거, `'Marketing'`만 표시 (한/영 모두)
 
+**OG 메타 태그 및 이미지 교체:**
+- `public/og-image.png` — KoreaTech CT 이미지 → Marketing 전용 OG 이미지(1200x630) 생성
+- `index.html` — theme-color #0046C8, OG title/site_name에서 DreamIT 제거, 이미지 크기 1200x630
+- `SEOHead.jsx` — site name "Marketing", OG image 크기 1200x630
+- `scripts/generate-og-image.cjs` — OG 이미지 자동 생성 스크립트 추가
+
 ---
 
 ## 프로젝트 구조
