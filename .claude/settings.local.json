@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cmd //c \"mkdir D:\\\\marketing\")",
+      "Bash(cmd //c \"dir D:\\\\marketing\")",
+      "Bash(npm run build:*)"
+    ]
+  }
+}
