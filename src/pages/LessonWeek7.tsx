@@ -39,7 +39,7 @@ const LessonWeek7 = () => {
               </thead>
               <tbody>
                 <tr>
-                  <td rowSpan="3"><strong>내부 요인</strong></td>
+                  <td rowSpan={3}><strong>내부 요인</strong></td>
                   <td>마케팅 목표</td>
                   <td>생존, 이익 극대화, 시장 점유율, 품질 리더십</td>
                 </tr>
@@ -52,7 +52,7 @@ const LessonWeek7 = () => {
                   <td>고정비, 변동비가 가격의 하한선 결정</td>
                 </tr>
                 <tr>
-                  <td rowSpan="3"><strong>외부 요인</strong></td>
+                  <td rowSpan={3}><strong>외부 요인</strong></td>
                   <td>시장 수요</td>
                   <td>수요의 크기와 가격 민감도</td>
                 </tr>

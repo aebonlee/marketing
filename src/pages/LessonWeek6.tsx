@@ -74,7 +74,7 @@ const LessonWeek6 = () => {
               </thead>
               <tbody>
                 <tr>
-                  <td rowSpan="4"><strong>소비재</strong></td>
+                  <td rowSpan={4}><strong>소비재</strong></td>
                   <td>편의품</td>
                   <td>저관여, 빈번 구매, 저가</td>
                   <td>음료, 과자, 세제</td>

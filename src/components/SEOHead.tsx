@@ -1,6 +1,6 @@
 import { useLanguage } from '../contexts/LanguageContext';
 
-const SEOHead = ({ title, description, path = '', ogImage, noindex = false }) => {
+const SEOHead = ({ title, description, path = '', ogImage, noindex = false }: any) => {
   const SITE = 'Marketing | 마케팅 학습';
   const BASE = 'https://marketing.dreamitbiz.com';
   const DEFAULT_DESC = '마케팅 기초부터 디지털마케팅 실무까지 - 15주 체계적 학습 과정';
