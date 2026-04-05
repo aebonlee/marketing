@@ -41,7 +41,7 @@ const LectureDetail = () => {
       await deleteLecture(id);
       showToast(t('site.lectures.deleted'), 'success');
       navigate(basePath);
-    } catch (err) {
+    } catch (err: any) {
       showToast(err.message, 'error');
     }
   };
